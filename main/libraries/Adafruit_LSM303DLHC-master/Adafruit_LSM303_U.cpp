@@ -1,14 +1,10 @@
 /***************************************************************************
   This is a library for the LSM303 Accelerometer and magnentometer/compass
-
   Designed specifically to work with the Adafruit LSM303DLHC Breakout
-
   These displays use I2C to communicate, 2 pins are required to interface.
-
   Adafruit invests time and resources providing this open source code,
   please support Adafruit andopen-source hardware by purchasing products
   from Adafruit!
-
   Written by Kevin Townsend for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
@@ -158,13 +154,16 @@ bool Adafruit_LSM303_Accel_Unified::begin()
   // Enable I2C
   Wire.begin();
 
-  // Enable the accelerometer (100Hz)
-  write8(LSM303_ADDRESS_ACCEL, LSM303_REGISTER_ACCEL_CTRL_REG1_A, 0x57);
-
+  // Enable the accelerometer (400Hz)
+  write8(LSM303_ADDRESS_ACCEL, LSM303_REGISTER_ACCEL_CTRL_REG1_A, 0x77);
+  
+  // Enable +-16g
+  write8(LSM303_ADDRESS_ACCEL, LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0x08);
+  
   // LSM303DLHC has no WHOAMI register so read CTRL_REG1_A back to check
   // if we are connected or not
   uint8_t reg1_a = read8(LSM303_ADDRESS_ACCEL, LSM303_REGISTER_ACCEL_CTRL_REG1_A);
-  if (reg1_a != 0x57)
+  if (reg1_a != 0x77)
   {
     return false;
   }
